@@ -1,3 +1,22 @@
+<script setup>
+import { ref } from "vue";
+const open = ref(false);
+function toggle() {
+  open.value = !open.value;
+}
+function close() {
+  open.value = false;
+}
+
+const navLinks = [
+  { name: "Home", to: "/" },
+  { name: "About", to: "/about" },
+  { name: "Experience", to: "/experience" },
+  { name: "Projects", to: "/projects" },
+  { name: "Skills", to: "/skills" },
+  { name: "Contact", to: "/contact" },
+];
+</script>
 <template>
   <header
     style="background-color: #252526; border-bottom: 1px solid #3e3e42"
@@ -14,49 +33,23 @@
         </div>
         <div class="hidden sm:block">
           <div style="color: #cccccc" class="text-base font-semibold">
-            Your Name
+            Md. Muhir
           </div>
           <div style="color: #858585" class="text-xs">Full Stack Developer</div>
         </div>
       </div>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center gap-8 text-sm">
-        <a
-          href="#home"
+      <nav
+        v-for="(link, index) in navLinks"
+        :key="index"
+        class="hidden md:flex items-center gap-8 text-sm"
+      >
+        <nuxt-link
           style="color: #858585"
           class="hover:text-blue-400 transition duration-200"
-          >Home</a
-        >
-        <a
-          href="#about"
-          style="color: #858585"
-          class="hover:text-blue-400 transition duration-200"
-          >About</a
-        >
-        <a
-          href="#experience"
-          style="color: #858585"
-          class="hover:text-blue-400 transition duration-200"
-          >Experience</a
-        >
-        <a
-          href="#projects"
-          style="color: #858585"
-          class="hover:text-blue-400 transition duration-200"
-          >Projects</a
-        >
-        <a
-          href="#skills"
-          style="color: #858585"
-          class="hover:text-blue-400 transition duration-200"
-          >Skills</a
-        >
-        <a
-          href="#contact"
-          style="color: #858585"
-          class="hover:text-blue-400 transition duration-200"
-          >Contact</a
+          :to="link.to"
+          >{{ link.name }}</nuxt-link
         >
       </nav>
 
@@ -179,14 +172,3 @@
     </div>
   </header>
 </template>
-
-<script setup>
-import { ref } from "vue";
-const open = ref(false);
-function toggle() {
-  open.value = !open.value;
-}
-function close() {
-  open.value = false;
-}
-</script>

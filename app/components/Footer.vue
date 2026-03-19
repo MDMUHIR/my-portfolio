@@ -129,32 +129,13 @@
           <h3 style="color: #4ec9b0" class="font-semibold mb-4">// social</h3>
           <div class="flex gap-4 text-lg">
             <a
-              href="#"
-              aria-label="GitHub"
+              v-for="link in displaySocialLinks"
+              :key="link.title"
+              :href="link.link"
+              :aria-label="link.title"
               style="color: #858585"
               class="hover:text-blue-400 transition"
-              >🐙</a
-            >
-            <a
-              href="#"
-              aria-label="LinkedIn"
-              style="color: #858585"
-              class="hover:text-blue-400 transition"
-              >💼</a
-            >
-            <a
-              href="#"
-              aria-label="Twitter"
-              style="color: #858585"
-              class="hover:text-blue-400 transition"
-              >𝕏</a
-            >
-            <a
-              href="#"
-              aria-label="Email"
-              style="color: #858585"
-              class="hover:text-blue-400 transition"
-              >✉️</a
+              >{{ link.icon }}</a
             >
           </div>
         </div>
@@ -191,6 +172,30 @@
   </footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
+const { socialLinks, fetchSocialLinks } = useSocialLinks();
+
+onMounted(async () => {
+  await fetchSocialLinks();
+});
+
 const year = new Date().getFullYear();
+
+const defaultSocialLinks = [
+  { icon: '🐙', title: 'GitHub', link: '#' },
+  { icon: '💼', title: 'LinkedIn', link: '#' },
+  { icon: '𝕏', title: 'Twitter', link: '#' },
+  { icon: '✉️', title: 'Email', link: 'mailto:#' },
+];
+
+const displaySocialLinks = computed(() => {
+  if (socialLinks.value.length > 0) {
+    return socialLinks.value.map(link => ({
+      icon: link.icon || '📧',
+      title: link.title,
+      link: link.link,
+    }));
+  }
+  return defaultSocialLinks;
+});
 </script>

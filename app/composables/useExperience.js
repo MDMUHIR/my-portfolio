@@ -1,29 +1,15 @@
-export interface Experience {
-  id: number;
-  title: string;
-  company: string;
-  duration: string;
-  location: string;
-  description: string;
-  highlights: string[];
-  tags: string[];
-  type?: "job" | "education";
-  created_at?: string;
-  updated_at?: string;
-}
-
 export const useExperience = () => {
-  const { fetchApi } = useApi();
-  const jobs = ref<Experience[]>([]);
-  const education = ref<Experience[]>([]);
+  const { request } = useApi();
+  const jobs = ref([]);
+  const education = ref([]);
   const loading = ref(false);
-  const error = ref<string | null>(null);
+  const error = ref(null);
 
   const fetchJobs = async () => {
     loading.value = true;
     error.value = null;
     try {
-      const data = await fetchApi<{ data: Experience[] }>("/api/experience/jobs");
+      const data = await request({ url: "/api/experience/jobs" });
       jobs.value = data.data || data;
     } catch (e) {
       error.value = e instanceof Error ? e.message : "Failed to fetch jobs";
@@ -37,7 +23,7 @@ export const useExperience = () => {
     loading.value = true;
     error.value = null;
     try {
-      const data = await fetchApi<{ data: Experience[] }>("/api/experience/education");
+      const data = await request({ url: "/api/experience/education" });
       education.value = data.data || data;
     } catch (e) {
       error.value = e instanceof Error ? e.message : "Failed to fetch education";

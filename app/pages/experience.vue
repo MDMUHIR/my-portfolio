@@ -1,4 +1,13 @@
 <script setup lang="ts">
+useHead({
+  title: 'Experience — Md. Muhir Uddin',
+  meta: [
+    { name: 'description', content: 'Professional experience and work history of Md. Muhir Uddin — full-stack developer and AI engineer.' },
+    { property: 'og:title', content: 'Experience — Md. Muhir Uddin' },
+    { property: 'og:description', content: 'Professional experience and work history of Md. Muhir Uddin.' },
+  ],
+})
+
 const { jobs, education, loading, fetchJobs, fetchEducation } = useExperience();
 
 onMounted(async () => {
@@ -56,8 +65,7 @@ const displayJobs = computed(() => jobs.value.length > 0 ? jobs.value : defaultJ
 <template>
   <section
     id="experience"
-    style="background-color: #1e1e1e; border-top: 1px solid #3e3e42"
-    class="section"
+    class="section section-default"
   >
     <div class="max-w-5xl mx-auto px-6">
       <h2 class="section-title">// Experience</h2>
@@ -73,37 +81,22 @@ const displayJobs = computed(() => jobs.value.length > 0 ? jobs.value : defaultJ
           class="card p-6 hover:shadow-lg"
           style="border-left: 3px solid #007acc"
         >
-          <div
-            class="flex flex-col md:flex-row md:items-start md:justify-between mb-3"
-          >
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-3">
             <div>
-              <h3 style="color: #cccccc" class="text-xl font-bold">
-                {{ exp.title }}
-              </h3>
-              <p style="color: #007acc" class="font-semibold">
-                {{ exp.company }}
-              </p>
-              <p style="color: #858585" class="text-sm">
-                📍 {{ exp.location }}
-              </p>
+              <h3 class="text-theme text-xl font-bold">{{ exp.title }}</h3>
+              <p class="text-accent font-semibold">{{ exp.company }}</p>
+              <p class="text-theme-secondary text-sm">📍 {{ exp.location }}</p>
             </div>
-            <div style="color: #858585" class="text-right text-sm mt-2 md:mt-0">
+            <div class="text-theme-secondary text-right text-sm mt-2 md:mt-0">
               <p class="font-semibold">{{ exp.duration }}</p>
             </div>
           </div>
 
-          <p style="color: #cccccc" class="mb-4">{{ exp.description }}</p>
+          <p class="text-theme mb-4">{{ exp.description }}</p>
 
           <ul class="space-y-2 mb-4">
-            <li
-              v-for="(highlight, idx) in exp.highlights"
-              :key="idx"
-              class="flex gap-3"
-              style="color: #cccccc"
-            >
-              <span style="color: #007acc" class="font-bold leading-relaxed"
-                >→</span
-              >
+            <li v-for="(highlight, idx) in exp.highlights" :key="idx" class="flex gap-3 text-theme">
+              <span class="text-accent font-bold leading-relaxed">→</span>
               <span>{{ highlight }}</span>
             </li>
           </ul>
@@ -112,8 +105,8 @@ const displayJobs = computed(() => jobs.value.length > 0 ? jobs.value : defaultJ
             <span
               v-for="tag in exp.tags"
               :key="tag"
-              style="background-color: #264f78; color: #0098ff; border: 1px solid #007acc"
               class="inline-block px-3 py-1 rounded text-xs font-medium"
+              :style="{ backgroundColor: 'var(--selection)', color: 'var(--accent-light)', border: '1px solid var(--accent)' }"
             >
               {{ tag }}
             </span>

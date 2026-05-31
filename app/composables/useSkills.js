@@ -1,28 +1,14 @@
-export interface Skill {
-  id: number;
-  name: string;
-  level: number;
-  category?: string;
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface SkillCategory {
-  name: string;
-  skills: Skill[];
-}
-
 export const useSkills = () => {
-  const { fetchApi } = useApi();
-  const skills = ref<Skill[]>([]);
+  const { request } = useApi();
+  const skills = ref([]);
   const loading = ref(false);
-  const error = ref<string | null>(null);
+  const error = ref(null);
 
   const fetchSkills = async () => {
     loading.value = true;
     error.value = null;
     try {
-      const data = await fetchApi<{ data: Skill[] }>("/api/skills");
+      const data = await request({ url: "/api/skills" });
       skills.value = data.data || data;
     } catch (e) {
       error.value = e instanceof Error ? e.message : "Failed to fetch skills";
@@ -33,7 +19,7 @@ export const useSkills = () => {
   };
 
   const groupedSkills = computed(() => {
-    const groups: Record<string, Skill[]> = {};
+    const groups = {};
     skills.value.forEach((skill) => {
       const category = skill.category || "Other";
       if (!groups[category]) {

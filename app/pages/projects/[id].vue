@@ -17,6 +17,27 @@ onMounted(async () => {
   loading.value = false;
 });
 
+const headTitle = computed(() =>
+  displayProject.value
+    ? `${displayProject.value.title} — Md. Muhir Uddin`
+    : 'Project — Md. Muhir Uddin'
+)
+
+const headDescription = computed(() =>
+  displayProject.value
+    ? displayProject.value.description
+    : 'Project details and case study'
+)
+
+useHead({
+  title: headTitle,
+  meta: [
+    { name: 'description', content: headDescription },
+    { property: 'og:title', content: headTitle },
+    { property: 'og:description', content: headDescription },
+  ],
+})
+
 const defaultProjects: Record<string, any> = {
   "1": {
     id: 1,

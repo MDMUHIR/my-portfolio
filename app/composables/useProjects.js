@@ -1,30 +1,14 @@
-export interface Project {
-  id: number;
-  title: string;
-  slug: string;
-  description: string;
-  category: string;
-  image: string;
-  tags: string[];
-  link: string;
-  github: string;
-  highlights: string[];
-  stats: Record<string, string>;
-  created_at?: string;
-  updated_at?: string;
-}
-
 export const useProjects = () => {
-  const { fetchApi } = useApi();
-  const projects = ref<Project[]>([]);
+  const { request } = useApi();
+  const projects = ref([]);
   const loading = ref(false);
-  const error = ref<string | null>(null);
+  const error = ref(null);
 
   const fetchProjects = async () => {
     loading.value = true;
     error.value = null;
     try {
-      const data = await fetchApi<{ data: Project[] }>("/api/projects");
+      const data = await request({ url: "/api/projects" });
       projects.value = data.data || data;
     } catch (e) {
       error.value = e instanceof Error ? e.message : "Failed to fetch projects";
@@ -34,11 +18,11 @@ export const useProjects = () => {
     }
   };
 
-  const fetchProjectBySlug = async (slug: string): Promise<Project | null> => {
+  const fetchProjectBySlug = async (slug) => {
     loading.value = true;
     error.value = null;
     try {
-      const data = await fetchApi<{ data: Project }>(`/api/projects/${slug}`);
+      const data = await request({ url: `/api/projects/${slug}` });
       return data.data || data;
     } catch (e) {
       error.value = e instanceof Error ? e.message : "Failed to fetch project";

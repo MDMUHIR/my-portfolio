@@ -90,7 +90,7 @@ const displayProjects = computed(() => projects.value.length > 0 ? projects.valu
 </script>
 
 <template>
-  <section id="projects" style="background-color: #1e1e1e" class="section">
+  <section id="projects" class="section section-default">
     <div class="max-w-5xl mx-auto px-6">
       <h2 class="section-title">// Featured Projects</h2>
 
@@ -105,8 +105,10 @@ const displayProjects = computed(() => projects.value.length > 0 ? projects.valu
           class="card hover:shadow-xl overflow-hidden group transition-all duration-300"
         >
           <div
-            style="background: linear-gradient(135deg, #264f78 0%, #1e1e1e 100%)"
             class="p-6 flex items-center justify-center min-h-32 group-hover:shadow-md transition"
+            :style="{
+              background: `linear-gradient(135deg, var(--selection) 0%, var(--bg) 100%)`,
+            }"
           >
             <div class="text-6xl">{{ p.image }}</div>
           </div>
@@ -114,35 +116,25 @@ const displayProjects = computed(() => projects.value.length > 0 ? projects.valu
           <div class="p-6">
             <div class="flex items-start justify-between mb-3">
               <div>
-                <h3
-                  style="color: #cccccc"
-                  class="font-bold text-lg group-hover:text-blue-400 transition"
-                >
+                <h3 class="text-theme font-bold text-lg group-hover:text-accent-light transition">
                   {{ p.title }}
                 </h3>
-                <p style="color: #007acc" class="text-xs font-semibold">
-                  {{ p.category }}
-                </p>
+                <p class="text-accent text-xs font-semibold">{{ p.category }}</p>
               </div>
             </div>
 
-            <p style="color: #858585" class="text-sm mb-4 line-clamp-2">
-              {{ p.description }}
-            </p>
+            <p class="text-theme-secondary text-sm mb-4 line-clamp-2">{{ p.description }}</p>
 
             <div
-              style="background-color: #2d2d30; border: 1px solid #3e3e42"
               class="grid grid-cols-2 gap-3 mb-4 p-3 rounded-lg text-xs"
+              :style="{
+                backgroundColor: 'var(--bg-tertiary)',
+                border: '1px solid var(--border)',
+              }"
             >
-              <div
-                v-for="(value, key) in p.stats"
-                :key="key"
-                class="text-center"
-              >
-                <div style="color: #0098ff" class="font-bold">{{ value }}</div>
-                <div style="color: #858585" class="capitalize">
-                  {{ key.replace(/([A-Z])/g, ' $1').trim() }}
-                </div>
+              <div v-for="(value, key) in p.stats" :key="key" class="text-center">
+                <div class="text-accent-light font-bold">{{ value }}</div>
+                <div class="text-theme-secondary capitalize">{{ key.replace(/([A-Z])/g, ' $1').trim() }}</div>
               </div>
             </div>
 
@@ -150,25 +142,35 @@ const displayProjects = computed(() => projects.value.length > 0 ? projects.valu
               <span
                 v-for="t in p.tags"
                 :key="t"
-                style="background-color: #264f78; color: #0098ff; border: 1px solid #007acc"
                 class="text-xs inline-block px-2 py-1 rounded"
+                :style="{
+                  backgroundColor: 'var(--selection)',
+                  color: 'var(--accent-light)',
+                  border: '1px solid var(--accent)',
+                }"
               >
                 {{ t }}
               </span>
             </div>
 
-            <div style="border-color: #3e3e42" class="flex gap-3 pt-4 border-t">
+            <div class="flex gap-3 pt-4 border-t border-theme">
               <a
                 :href="p.link"
-                style="color: #007acc; border: 1px solid #007acc"
-                class="flex-1 px-3 py-2 text-sm text-center rounded font-semibold hover:bg-opacity-10 hover:bg-blue-600 transition"
+                class="flex-1 px-3 py-2 text-sm text-center rounded font-semibold transition"
+                :style="{
+                  color: 'var(--accent)',
+                  border: '1px solid var(--accent)',
+                }"
               >
                 View
               </a>
               <a
                 :href="p.github"
-                style="color: #858585; border: 1px solid #3e3e42"
-                class="flex-1 px-3 py-2 text-sm text-center rounded font-semibold hover:bg-opacity-10 hover:bg-gray-600 transition"
+                class="flex-1 px-3 py-2 text-sm text-center rounded font-semibold transition"
+                :style="{
+                  color: 'var(--text-secondary)',
+                  border: '1px solid var(--border)',
+                }"
               >
                 Code
               </a>

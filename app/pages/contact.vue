@@ -1,4 +1,13 @@
 <script setup lang="ts">
+useHead({
+  title: 'Contact — Md. Muhir Uddin',
+  meta: [
+    { name: 'description', content: 'Get in touch with Md. Muhir Uddin for project inquiries, collaboration opportunities, or AI consulting.' },
+    { property: 'og:title', content: 'Contact — Md. Muhir Uddin' },
+    { property: 'og:description', content: 'Get in touch for project inquiries, collaboration, or AI consulting.' },
+  ],
+})
+
 const { socialLinks, loading: linksLoading, fetchSocialLinks } = useSocialLinks();
 const { success, sending, submitContact } = useContact();
 
@@ -74,13 +83,13 @@ const handleSubmit = async (e: Event) => {
 </script>
 
 <template>
-  <section id="contact" style="background-color: #252526; border-top: 1px solid #3e3e42" class="section">
+  <section id="contact" class="section section-alt">
     <div class="max-w-5xl mx-auto px-6">
       <h2 class="section-title">// Get in Touch</h2>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-1">
-          <h3 style="color: #4ec9b0" class="text-lg font-semibold mb-6">📬 Contacts</h3>
+          <h3 class="text-success text-lg font-semibold mb-6">📬 Contacts</h3>
           
           <div v-if="linksLoading" class="flex justify-center py-4">
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
@@ -92,16 +101,16 @@ const handleSubmit = async (e: Event) => {
               <div class="flex items-start gap-3">
                 <span class="text-2xl">{{ method.icon }}</span>
                 <div>
-                  <p style="color: #cccccc" class="font-semibold text-sm">{{ method.title }}</p>
-                  <p style="color: #858585" class="text-xs break-all">{{ method.value }}</p>
+                  <p class="text-theme font-semibold text-sm">{{ method.title }}</p>
+                  <p class="text-theme-secondary text-xs break-all">{{ method.value }}</p>
                 </div>
               </div>
             </a>
           </div>
 
-          <div class="card p-4 mt-6" style="background-color: #264f78; border: 1px solid #007acc">
-            <p style="color: #cccccc" class="text-xs">
-              <strong style="color: #0098ff">⏱️ Response:</strong> 24h (weekdays)
+          <div class="card p-4 mt-6" :style="{ backgroundColor: 'var(--selection)', border: '1px solid var(--accent)' }">
+            <p class="text-xs" :style="{ color: 'var(--text-primary)' }">
+              <strong :style="{ color: 'var(--accent-light)' }">⏱️ Response:</strong> 24h (weekdays)
             </p>
           </div>
         </div>
@@ -109,7 +118,7 @@ const handleSubmit = async (e: Event) => {
         <div class="lg:col-span-2">
           <form @submit="handleSubmit" class="space-y-4">
             <transition enter-active-class="transition ease-out duration-300" enter-from-class="opacity-0 translate-y-2" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-200" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-2">
-              <div v-if="submitted" style="background-color: #264f78; border-color: #4ec9b0; color: #4ec9b0" class="p-4 border rounded-lg text-sm">
+              <div v-if="submitted" :style="{ backgroundColor: 'var(--selection)', borderColor: 'var(--success)', color: 'var(--success)' }" class="p-4 border rounded-lg text-sm">
                 {{ submitMessage }}
               </div>
             </transition>
@@ -121,40 +130,40 @@ const handleSubmit = async (e: Event) => {
             </transition>
 
             <div>
-              <label for="name" style="color: #4ec9b0" class="block text-sm font-medium mb-2">name</label>
+              <label for="name" class="text-success block text-sm font-medium mb-2">name</label>
               <input id="name" v-model="form.name" type="text" placeholder="John Doe"
-                style="background-color: #1e1e1e; border: 1px solid #3e3e42; color: #cccccc"
+                :style="{ backgroundColor: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text-primary)' }"
                 class="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
                 :class="{ 'border-red-500 focus:ring-red-600': errors.name }" />
-              <p v-if="errors.name" style="color: #f48771" class="mt-1 text-xs">{{ errors.name }}</p>
+              <p v-if="errors.name" class="text-danger mt-1 text-xs">{{ errors.name }}</p>
             </div>
 
             <div>
-              <label for="email" style="color: #4ec9b0" class="block text-sm font-medium mb-2">email</label>
+              <label for="email" class="text-success block text-sm font-medium mb-2">email</label>
               <input id="email" v-model="form.email" type="email" placeholder="john@example.com"
-                style="background-color: #1e1e1e; border: 1px solid #3e3e42; color: #cccccc"
+                :style="{ backgroundColor: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text-primary)' }"
                 class="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
                 :class="{ 'border-red-500 focus:ring-red-600': errors.email }" />
-              <p v-if="errors.email" style="color: #f48771" class="mt-1 text-xs">{{ errors.email }}</p>
+              <p v-if="errors.email" class="text-danger mt-1 text-xs">{{ errors.email }}</p>
             </div>
 
             <div>
-              <label for="subject" style="color: #4ec9b0" class="block text-sm font-medium mb-2">subject</label>
+              <label for="subject" class="text-success block text-sm font-medium mb-2">subject</label>
               <input id="subject" v-model="form.subject" type="text" placeholder="Project Inquiry"
-                style="background-color: #1e1e1e; border: 1px solid #3e3e42; color: #cccccc"
+                :style="{ backgroundColor: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text-primary)' }"
                 class="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
                 :class="{ 'border-red-500 focus:ring-red-600': errors.subject }" />
-              <p v-if="errors.subject" style="color: #f48771" class="mt-1 text-xs">{{ errors.subject }}</p>
+              <p v-if="errors.subject" class="text-danger mt-1 text-xs">{{ errors.subject }}</p>
             </div>
 
             <div>
-              <label for="message" style="color: #4ec9b0" class="block text-sm font-medium mb-2">message</label>
+              <label for="message" class="text-success block text-sm font-medium mb-2">message</label>
               <textarea id="message" v-model="form.message" rows="6" placeholder="Tell me about your project..."
-                style="background-color: #1e1e1e; border: 1px solid #3e3e42; color: #cccccc"
+                :style="{ backgroundColor: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text-primary)' }"
                 class="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition resize-none"
                 :class="{ 'border-red-500 focus:ring-red-600': errors.message }"></textarea>
-              <p v-if="errors.message" style="color: #f48771" class="mt-1 text-xs">{{ errors.message }}</p>
-              <p style="color: #858585" class="mt-1 text-xs">{{ form.message.length }} / 5000 chars</p>
+              <p v-if="errors.message" class="text-danger mt-1 text-xs">{{ errors.message }}</p>
+              <p class="text-theme-secondary mt-1 text-xs">{{ form.message.length }} / 5000 chars</p>
             </div>
 
             <div class="pt-4">
@@ -166,7 +175,7 @@ const handleSubmit = async (e: Event) => {
               </button>
             </div>
 
-            <p style="color: #858585" class="text-xs text-center">Privacy protected • Responds in 24h</p>
+            <p class="text-theme-secondary text-xs text-center">Privacy protected • Responds in 24h</p>
           </form>
         </div>
       </div>

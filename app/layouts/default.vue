@@ -1,10 +1,9 @@
-<script setup></script>
+<script setup>
+useTheme()
+</script>
 
 <template>
-  <div
-    class="min-h-screen flex flex-col"
-    style="background-color: #1e1e1e; color: #cccccc"
-  >
+  <div class="min-h-screen flex flex-col bg-theme text-theme">
     <Header />
     <main class="flex-1">
       <slot />
@@ -12,5 +11,3 @@
     <Footer />
   </div>
 </template>
-
-<style scoped></style>

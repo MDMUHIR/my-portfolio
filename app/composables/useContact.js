@@ -1,25 +1,19 @@
-export interface ContactForm {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
-
 export const useContact = () => {
-  const { fetchApi } = useApi();
+  const { request } = useApi();
   const sending = ref(false);
-  const error = ref<string | null>(null);
+  const error = ref(null);
   const success = ref(false);
 
-  const submitContact = async (form: ContactForm): Promise<boolean> => {
+  const submitContact = async (form) => {
     sending.value = true;
     error.value = null;
     success.value = false;
 
     try {
-      await fetchApi<{ message: string }>("/api/contact", {
+      await request({
+        url: "/api/contact",
         method: "POST",
-        body: JSON.stringify(form),
+        data: form,
       });
       success.value = true;
       return true;

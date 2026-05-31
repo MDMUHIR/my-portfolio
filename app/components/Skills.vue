@@ -64,7 +64,7 @@ const displayCategories = computed(() => groupedSkills.value.length > 0 ? groupe
 </script>
 
 <template>
-  <section id="skills" style="background-color: #252526">
+  <section id="skills" class="section-alt">
     <div class="max-w-5xl mx-auto px-6">
       <h2 class="section-title">// Skills & Packages</h2>
 
@@ -74,32 +74,24 @@ const displayCategories = computed(() => groupedSkills.value.length > 0 ? groupe
 
       <div v-else>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <div
-            v-for="category in displayCategories"
-            :key="category.name"
-            class="card p-6"
-          >
-            <h3 style="color: #4ec9b0" class="text-lg font-semibold mb-6">
-              {{ category.name }}
-            </h3>
+          <div v-for="category in displayCategories" :key="category.name" class="card p-6">
+            <h3 class="text-success text-lg font-semibold mb-6">{{ category.name }}</h3>
             <div class="space-y-4">
               <div v-for="skill in category.skills" :key="skill.name">
                 <div class="flex justify-between mb-2">
-                  <span style="color: #cccccc" class="text-sm font-medium">{{
-                    skill.name
-                  }}</span>
-                  <span style="color: #858585" class="text-xs"
-                    >{{ skill.level }}%</span
-                  >
+                  <span class="text-theme text-sm font-medium">{{ skill.name }}</span>
+                  <span class="text-theme-secondary text-xs">{{ skill.level }}%</span>
                 </div>
                 <div
-                  style="background-color: #3e3e42"
                   class="w-full rounded-full h-2 overflow-hidden"
+                  :style="{ backgroundColor: 'var(--border)' }"
                 >
                   <div
-                    style="background: linear-gradient(90deg, #007acc, #0098ff)"
                     class="h-full rounded-full transition-all duration-1000"
-                    :style="{ width: `${skill.level}%` }"
+                    :style="{
+                      width: `${skill.level}%`,
+                      background: 'linear-gradient(90deg, var(--accent), var(--accent-light))',
+                    }"
                   ></div>
                 </div>
               </div>
@@ -108,39 +100,32 @@ const displayCategories = computed(() => groupedSkills.value.length > 0 ? groupe
         </div>
 
         <div class="card p-6">
-          <h3 style="color: #4ec9b0" class="text-lg font-semibold mb-6">
-            ⭐ Top Skills
-          </h3>
+          <h3 class="text-success text-lg font-semibold mb-6">⭐ Top Skills</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
             <div
               v-for="endorsement in endorsements"
               :key="endorsement.skill"
-              style="background-color: #264f78; border: 1px solid #007acc"
               class="rounded-lg p-4 text-center hover:shadow-md transition"
+              :style="{
+                backgroundColor: 'var(--selection)',
+                border: '1px solid var(--accent)',
+              }"
             >
-              <div style="color: #0098ff" class="text-2xl font-bold mb-2">
-                {{ endorsement.count }}
-              </div>
-              <p style="color: #cccccc" class="text-sm font-semibold">
-                {{ endorsement.skill }}
-              </p>
-              <p style="color: #858585" class="text-xs mt-1">pts</p>
+              <div class="text-accent-light text-2xl font-bold mb-2">{{ endorsement.count }}</div>
+              <p class="text-theme text-sm font-semibold">{{ endorsement.skill }}</p>
+              <p class="text-theme-secondary text-xs mt-1">pts</p>
             </div>
           </div>
         </div>
 
         <div class="mt-8 card p-6">
-          <h3 style="color: #4ec9b0" class="text-lg font-semibold mb-6">
-            📜 Certifications
-          </h3>
+          <h3 class="text-success text-lg font-semibold mb-6">📜 Certifications</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div v-for="cert in 3" :key="cert" class="flex items-start gap-3">
-              <div class="text-2xl">✓</div>
+              <div class="text-2xl text-success">✓</div>
               <div>
-                <p style="color: #cccccc" class="font-semibold">
-                  Certification Title
-                </p>
-                <p style="color: #858585" class="text-sm">Issuing Org • 2024</p>
+                <p class="text-theme font-semibold">Certification Title</p>
+                <p class="text-theme-secondary text-sm">Issuing Org • 2024</p>
               </div>
             </div>
           </div>

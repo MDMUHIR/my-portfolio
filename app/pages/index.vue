@@ -3,49 +3,29 @@
     <Hero />
     <About />
     <Experience />
-    <!-- Quick Links Section -->
-    <section class="section-alt py-16">
-      <div class="max-w-5xl mx-auto px-6">
-          <h2 class="text-accent-light text-3xl font-bold mb-12 text-center">
-          // explore my portfolio
-        </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <!-- Skills Card -->
-          <NuxtLink
-            to="/skills"
-            class="card p-8 group hover:shadow-xl transition text-center"
-          >
+    <section class="section-alt">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <h2 class="text-accent-light text-2xl sm:text-3xl font-bold mb-10 sm:mb-12 text-center">// explore my portfolio</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+          <NuxtLink to="/skills" class="card p-8 sm:p-10 group hover:-translate-y-1 text-center transition-all duration-200">
             <div class="text-5xl mb-4">🎯</div>
-            <h3 class="text-theme text-xl font-bold mb-2 group-hover:text-accent-light transition">
-              Skills
-            </h3>
-            <p class="text-theme-secondary text-sm mb-4">
-              Explore my technical skills
-            </p>
+            <h3 class="text-theme text-xl font-bold mb-2 group-hover:text-accent-light transition-colors duration-200">Skills</h3>
+            <p class="text-theme-secondary text-sm mb-4">Explore my technical skills</p>
             <span class="text-accent text-sm font-semibold">View →</span>
           </NuxtLink>
 
-          <!-- Projects Card -->
-          <NuxtLink
-            to="/projects"
-            class="card p-8 group hover:shadow-xl transition text-center"
-          >
+          <NuxtLink to="/projects" class="card p-8 sm:p-10 group hover:-translate-y-1 text-center transition-all duration-200">
             <div class="text-5xl mb-4">🚀</div>
-            <h3 class="text-theme text-xl font-bold mb-2 group-hover:text-accent-light transition">
-              Projects
-            </h3>
-            <p class="text-theme-secondary text-sm mb-4">
-              View all my projects
-            </p>
+            <h3 class="text-theme text-xl font-bold mb-2 group-hover:text-accent-light transition-colors duration-200">Projects</h3>
+            <p class="text-theme-secondary text-sm mb-4">View all my projects</p>
             <span class="text-accent text-sm font-semibold">View →</span>
           </NuxtLink>
         </div>
 
-        <div class="flex justify-center mt-12">
-          <NuxtLink to="/contact" class="btn-primary text-center">
-            → Get in Touch
-          </NuxtLink>
+        <div class="flex justify-center mt-10 sm:mt-12">
+          <NuxtLink to="/contact" class="btn-primary">→ Get in Touch</NuxtLink>
         </div>
       </div>
     </section>

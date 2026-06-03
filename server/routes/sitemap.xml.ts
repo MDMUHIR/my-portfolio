@@ -2,12 +2,14 @@ import { getCollection } from '../utils/db'
 
 export default defineEventHandler(async (event) => {
   const projects = getCollection('projects')
+  const posts = getCollection('posts')
   const host = getHeader(event, 'host') || 'localhost:3000'
   const proto = getHeader(event, 'x-forwarded-proto') || 'http'
   const baseUrl = `${proto}://${host}`
 
   const pages = [
     { loc: '/', priority: '1.0', changefreq: 'weekly' },
+    { loc: '/blog', priority: '0.9', changefreq: 'weekly' },
     { loc: '/skills', priority: '0.8', changefreq: 'monthly' },
     { loc: '/projects', priority: '0.9', changefreq: 'weekly' },
     { loc: '/experience', priority: '0.7', changefreq: 'monthly' },
@@ -15,6 +17,11 @@ export default defineEventHandler(async (event) => {
     ...projects.map((p: any) => ({
       loc: `/projects/${p.slug || p.id}`,
       priority: '0.8',
+      changefreq: 'monthly' as const,
+    })),
+    ...posts.filter((p: any) => p.published).map((p: any) => ({
+      loc: `/blog/${p.slug || p.id}`,
+      priority: '0.7',
       changefreq: 'monthly' as const,
     })),
   ]

@@ -28,6 +28,11 @@
             </NuxtLink>
           </li>
           <li>
+            <NuxtLink to="/admin/posts" class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100" :class="{ 'bg-gray-100 text-blue-600': route.path.startsWith('/admin/posts') }">
+              Posts
+            </NuxtLink>
+          </li>
+          <li>
             <NuxtLink to="/admin/testimonials" class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100" :class="{ 'bg-gray-100 text-blue-600': route.path.startsWith('/admin/testimonials') }">
               Testimonials
             </NuxtLink>

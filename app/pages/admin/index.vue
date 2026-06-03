@@ -41,6 +41,19 @@
           </div>
         </div>
       </NuxtLink>
+      <NuxtLink to="/admin/posts" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-500">Posts</p>
+            <p class="text-2xl font-bold text-gray-800">{{ stats.posts }}</p>
+          </div>
+          <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+          </div>
+        </div>
+      </NuxtLink>
       <NuxtLink to="/admin/testimonials" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
         <div class="flex items-center justify-between">
           <div>
@@ -83,6 +96,14 @@
             </div>
             <span class="text-gray-700 font-medium">Add Experience</span>
           </NuxtLink>
+          <NuxtLink to="/admin/posts?action=new" class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+            <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+            </div>
+            <span class="text-gray-700 font-medium">Add Post</span>
+          </NuxtLink>
           <NuxtLink to="/admin/testimonials?action=new" class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
             <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-600">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -117,22 +138,25 @@ const stats = ref({
   projects: 0,
   skills: 0,
   experience: 0,
-  testimonials: 0
+  testimonials: 0,
+  posts: 0
 })
 
 onMounted(async () => {
   try {
-    const [projects, skills, experience, testimonials] = await Promise.all([
+    const [projects, skills, experience, testimonials, posts] = await Promise.all([
       request({ url: '/api/projects' }).catch(() => ({ data: [] })),
       request({ url: '/api/skills' }).catch(() => ({ data: [] })),
       request({ url: '/api/experience' }).catch(() => ({ data: [] })),
-      request({ url: '/api/testimonials' }).catch(() => ({ data: [] }))
+      request({ url: '/api/testimonials' }).catch(() => ({ data: [] })),
+      request({ url: '/api/posts' }).catch(() => ({ data: [] }))
     ])
     stats.value = {
       projects: projects.data?.length || 0,
       skills: skills.data?.length || 0,
       experience: experience.data?.length || 0,
-      testimonials: testimonials.data?.length || 0
+      testimonials: testimonials.data?.length || 0,
+      posts: posts.data?.length || 0
     }
   } catch (e) {
     console.log('Using demo data for admin stats')
@@ -140,7 +164,8 @@ onMounted(async () => {
       projects: 5,
       skills: 12,
       experience: 3,
-      testimonials: 4
+      testimonials: 4,
+      posts: 5
     }
   }
 })

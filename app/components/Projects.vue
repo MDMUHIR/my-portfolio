@@ -7,80 +7,62 @@ onMounted(async () => {
 
 const defaultProjects = [
   {
-    id: 1,
-    title: 'Project Alpha',
+    id: 1, title: 'Project Alpha',
     description: 'An AI-powered search assistant that helps users find information instantly.',
-    longDescription: 'A full-stack application featuring intelligent search capabilities powered by machine learning models.',
+    longDescription: 'A full-stack application featuring intelligent search capabilities.',
     category: 'AI & Web',
     tags: ['AI', 'Node', 'Vue', 'ML'],
-    image: '🤖',
-    link: '#',
-    github: '#',
-    highlights: ['Real-time search with ML recommendations', 'RESTful API with 99.9% uptime', 'Responsive design'],
+    image: '🤖', link: '#', github: '#',
+    highlights: ['Real-time search with ML recommendations', 'RESTful API with 99.9% uptime'],
     stats: { users: '100K+', activeDaily: '25K+', satisfaction: '4.8/5' },
   },
   {
-    id: 2,
-    title: 'Dashboard Pro',
+    id: 2, title: 'Dashboard Pro',
     description: 'Real-time analytics dashboard built with WebSockets for live data updates.',
-    longDescription: 'An enterprise-grade analytics platform providing real-time insights.',
+    longDescription: 'Enterprise-grade analytics platform.',
     category: 'Data & Visualization',
     tags: ['Realtime', 'D3', 'Node', 'WebSocket'],
-    image: '📊',
-    link: '#',
-    github: '#',
-    highlights: ['Real-time data streaming via WebSockets', 'Advanced data visualizations with D3.js', 'Handles millions of data points'],
+    image: '📊', link: '#', github: '#',
+    highlights: ['Real-time data streaming via WebSockets', 'Advanced D3.js visualizations'],
     stats: { dataPoints: '10M+', updateSpeed: '<100ms', satisfaction: '4.9/5' },
   },
   {
-    id: 3,
-    title: 'CLI Tools Suite',
+    id: 3, title: 'CLI Tools Suite',
     description: 'Developer tools and automation scripts to streamline workflows.',
-    longDescription: 'A comprehensive collection of command-line tools designed to automate repetitive development tasks.',
+    longDescription: 'A comprehensive collection of CLI tools.',
     category: 'Developer Tools',
     tags: ['Tooling', 'Node', 'CLI', 'Automation'],
-    image: '⚙️',
-    link: '#',
-    github: '#',
-    highlights: ['10+ different CLI utilities', 'Cross-platform compatibility', '50K+ npm downloads'],
+    image: '⚙️', link: '#', github: '#',
+    highlights: ['10+ CLI utilities', 'Cross-platform compatibility', '50K+ npm downloads'],
     stats: { downloads: '50K+', coverage: '95%', satisfaction: '4.7/5' },
   },
   {
-    id: 4,
-    title: 'E-Commerce Platform',
+    id: 4, title: 'E-Commerce Platform',
     description: 'Full-featured e-commerce solution with payment integration and inventory management.',
-    longDescription: 'A complete online store solution with all the features you need.',
+    longDescription: 'Complete online store solution.',
     category: 'Full Stack',
     tags: ['React', 'Node', 'Payment API', 'PostgreSQL'],
-    image: '🛍️',
-    link: '#',
-    github: '#',
-    highlights: ['Secure payment processing', 'Real-time inventory tracking', 'Mobile-responsive design'],
+    image: '🛍️', link: '#', github: '#',
+    highlights: ['Secure payment processing', 'Real-time inventory tracking'],
     stats: { transactions: '100K+', revenue: '$5M+', satisfaction: '4.8/5' },
   },
   {
-    id: 5,
-    title: 'AI Content Generator',
+    id: 5, title: 'AI Content Generator',
     description: 'Intelligent content generation tool powered by GPT models.',
-    longDescription: 'Generate content quickly with AI assistance.',
+    longDescription: 'Generate content quickly with AI.',
     category: 'AI/ML',
     tags: ['AI', 'GPT', 'Python', 'Vue'],
-    image: '✍️',
-    link: '#',
-    github: '#',
-    highlights: ['GPT-4 integration', 'Template-based generation', 'API rate optimization'],
+    image: '✍️', link: '#', github: '#',
+    highlights: ['GPT-4 integration', 'Template-based generation'],
     stats: { generated: '1M+', avgQuality: '9.2/10', satisfaction: '4.9/5' },
   },
   {
-    id: 6,
-    title: 'Project Management App',
+    id: 6, title: 'Project Management App',
     description: 'Collaborative project management tool with real-time updates and Kanban boards.',
-    longDescription: 'Manage your projects with ease using our collaborative platform.',
+    longDescription: 'Manage projects with ease.',
     category: 'Productivity',
     tags: ['Vue', 'Firebase', 'WebSocket', 'TailwindCSS'],
-    image: '📋',
-    link: '#',
-    github: '#',
+    image: '📋', link: '#', github: '#',
     highlights: ['Real-time collaboration', 'Customizable workflows', 'Team analytics'],
     stats: { teams: '500+', activeUsers: '50K+', satisfaction: '4.8/5' },
   },
@@ -91,96 +73,63 @@ const displayProjects = computed(() => projects.value.length > 0 ? projects.valu
 
 <template>
   <section id="projects" class="section section-default">
-    <div class="max-w-5xl mx-auto px-6">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
       <h2 class="section-title">// Featured Projects</h2>
 
       <div v-if="loading" class="flex justify-center py-12">
         <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
       </div>
 
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
         <article
           v-for="p in displayProjects"
           :key="p.id"
-          class="card hover:shadow-xl overflow-hidden group transition-all duration-300"
+          class="card overflow-hidden group transition-all duration-300 hover:-translate-y-1"
         >
           <div
-            class="p-6 flex items-center justify-center min-h-32 group-hover:shadow-md transition"
-            :style="{
-              background: `linear-gradient(135deg, var(--selection) 0%, var(--bg) 100%)`,
-            }"
+            class="p-6 sm:p-6 flex items-center justify-center min-h-28 sm:min-h-32 transition-all duration-300 group-hover:scale-105"
+            :style="{ background: `linear-gradient(135deg, var(--selection) 0%, var(--bg) 100%)` }"
           >
-            <div class="text-6xl">{{ p.image }}</div>
+            <div class="text-5xl sm:text-6xl transition-transform duration-300 group-hover:scale-110">{{ p.image }}</div>
           </div>
 
-          <div class="p-6">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <h3 class="text-theme font-bold text-lg group-hover:text-accent-light transition">
-                  {{ p.title }}
-                </h3>
-                <p class="text-accent text-xs font-semibold">{{ p.category }}</p>
-              </div>
+          <div class="p-5 sm:p-6">
+            <div class="mb-3">
+              <h3 class="text-theme font-bold text-base sm:text-lg group-hover:text-accent-light transition-colors duration-200">{{ p.title }}</h3>
+              <p class="text-accent text-xs font-semibold mt-0.5">{{ p.category }}</p>
             </div>
 
-            <p class="text-theme-secondary text-sm mb-4 line-clamp-2">{{ p.description }}</p>
+            <p class="text-theme-secondary text-xs sm:text-sm mb-4 line-clamp-2 leading-relaxed">{{ p.description }}</p>
 
-            <div
-              class="grid grid-cols-2 gap-3 mb-4 p-3 rounded-lg text-xs"
-              :style="{
-                backgroundColor: 'var(--bg-tertiary)',
-                border: '1px solid var(--border)',
-              }"
-            >
+            <div class="grid grid-cols-3 gap-2 mb-4 p-3 rounded-lg text-xs" :style="{ backgroundColor: 'var(--bg-tertiary)', border: '1px solid var(--border)' }">
               <div v-for="(value, key) in p.stats" :key="key" class="text-center">
-                <div class="text-accent-light font-bold">{{ value }}</div>
-                <div class="text-theme-secondary capitalize">{{ key.replace(/([A-Z])/g, ' $1').trim() }}</div>
+                <div class="text-accent-light font-bold text-sm">{{ value }}</div>
+                <div class="text-theme-secondary capitalize truncate">{{ key.replace(/([A-Z])/g, ' $1').trim() }}</div>
               </div>
             </div>
 
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span
-                v-for="t in p.tags"
-                :key="t"
-                class="text-xs inline-block px-2 py-1 rounded"
-                :style="{
-                  backgroundColor: 'var(--selection)',
-                  color: 'var(--accent-light)',
-                  border: '1px solid var(--accent)',
-                }"
-              >
-                {{ t }}
-              </span>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span v-for="t in p.tags" :key="t" class="tag-badge text-xs">{{ t }}</span>
             </div>
 
             <div class="flex gap-3 pt-4 border-t border-theme">
               <a
                 :href="p.link"
-                class="flex-1 px-3 py-2 text-sm text-center rounded font-semibold transition"
-                :style="{
-                  color: 'var(--accent)',
-                  border: '1px solid var(--accent)',
-                }"
-              >
-                View
-              </a>
+                class="flex-1 px-3 py-2 text-xs sm:text-sm text-center rounded-lg font-semibold transition-all duration-200"
+                :style="{ color: 'var(--accent)', border: '1px solid var(--accent)' }"
+              >View</a>
               <a
                 :href="p.github"
-                class="flex-1 px-3 py-2 text-sm text-center rounded font-semibold transition"
-                :style="{
-                  color: 'var(--text-secondary)',
-                  border: '1px solid var(--border)',
-                }"
-              >
-                Code
-              </a>
+                class="flex-1 px-3 py-2 text-xs sm:text-sm text-center rounded-lg font-semibold transition-all duration-200"
+                :style="{ color: 'var(--text-secondary)', border: '1px solid var(--border)' }"
+              >Code</a>
             </div>
           </div>
         </article>
       </div>
 
-      <div class="flex justify-center mt-12">
-        <a href="/projects" class="btn-primary">▶ View All Projects</a>
+      <div class="flex justify-center mt-10 sm:mt-12">
+        <NuxtLink to="/projects" class="btn-primary">▶ View All Projects</NuxtLink>
       </div>
     </div>
   </section>

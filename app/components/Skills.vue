@@ -3,7 +3,15 @@ const { skills, groupedSkills, loading, fetchSkills } = useSkills();
 
 onMounted(async () => {
   await fetchSkills();
+  nextTick(() => {
+    observe()
+    animateProgress()
+  })
 });
+
+const { observe, destroy } = useScrollReveal();
+
+onUnmounted(() => destroy());
 
 const defaultSkillCategories = [
   {
@@ -47,12 +55,33 @@ const endorsements = [
 ];
 
 const displayCategories = computed(() => groupedSkills.value.length > 0 ? groupedSkills.value : defaultSkillCategories);
+
+const animatedBars = ref<string[]>([])
+
+function animateProgress() {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const skill = entry.target.getAttribute('data-skill')
+          if (skill) animatedBars.value.push(skill)
+          observer.unobserve(entry.target)
+        }
+      })
+    },
+    { threshold: 0.5 }
+  )
+
+  nextTick(() => {
+    document.querySelectorAll('[data-skill]').forEach((el) => observer.observe(el))
+  })
+}
 </script>
 
 <template>
   <section id="skills" class="section section-alt">
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
-      <h2 class="section-title">// Skills & Packages</h2>
+      <h2 class="section-title reveal">// Skills & Packages</h2>
 
       <div v-if="loading" class="flex justify-center py-12">
         <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
@@ -60,7 +89,12 @@ const displayCategories = computed(() => groupedSkills.value.length > 0 ? groupe
 
       <div v-else class="space-y-10">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-          <div v-for="category in displayCategories" :key="category.name" class="card p-5 sm:p-6">
+          <div
+            v-for="(category, catIdx) in displayCategories"
+            :key="category.name"
+            class="card p-5 sm:p-6 reveal"
+            :class="[`stagger-${(catIdx % 4) + 1}`]"
+          >
             <h3 class="text-success text-base sm:text-lg font-semibold mb-5">{{ category.name }}</h3>
             <div class="space-y-4">
               <div v-for="skill in category.skills" :key="skill.name">
@@ -69,30 +103,35 @@ const displayCategories = computed(() => groupedSkills.value.length > 0 ? groupe
                   <span class="text-theme-secondary text-xs">{{ skill.level }}%</span>
                 </div>
                 <div class="progress-bar">
-                  <div class="progress-bar-fill" :style="{ width: `${skill.level}%` }"></div>
+                  <div
+                    :data-skill="skill.name"
+                    class="progress-bar-fill"
+                    :style="{ width: animatedBars.includes(skill.name) ? `${skill.level}%` : '0%' }"
+                  ></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="card p-5 sm:p-6">
+        <div class="card p-5 sm:p-6 reveal">
           <h3 class="text-success text-base sm:text-lg font-semibold mb-6">⭐ Top Skills</h3>
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
             <div
-              v-for="endorsement in endorsements"
+              v-for="(endorsement, idx) in endorsements"
               :key="endorsement.skill"
-              class="rounded-xl p-4 text-center transition-all duration-200 hover:scale-105"
+              class="rounded-xl p-4 text-center transition-all duration-200 hover:scale-105 reveal"
+              :class="[`stagger-${idx + 1}`]"
               :style="{ backgroundColor: 'var(--selection)', border: '1px solid var(--accent)' }"
             >
-              <div class="text-accent-light text-2xl font-bold mb-1">{{ endorsement.count }}</div>
+              <div class="gradient-text-accent text-2xl font-bold mb-1">{{ endorsement.count }}</div>
               <p class="text-theme text-xs sm:text-sm font-semibold">{{ endorsement.skill }}</p>
               <p class="text-theme-secondary text-xs mt-1">pts</p>
             </div>
           </div>
         </div>
 
-        <div class="card p-5 sm:p-6">
+        <div class="card p-5 sm:p-6 reveal">
           <h3 class="text-success text-base sm:text-lg font-semibold mb-6">📜 Certifications</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             <div v-for="cert in 3" :key="cert" class="flex items-start gap-3">

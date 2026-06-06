@@ -9,7 +9,12 @@ const submitMessage = ref('');
 
 onMounted(async () => {
   await fetchSocialLinks();
+  nextTick(() => observe())
 });
+
+const { observe, destroy } = useScrollReveal();
+
+onUnmounted(() => destroy());
 
 const defaultContactMethods = [
   { icon: '📧', title: 'Email', value: 'your.email@example.com', link: 'mailto:your.email@example.com' },
@@ -55,18 +60,28 @@ const handleSubmit = async (e: Event) => {
 <template>
   <section id="contact" class="section section-alt">
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
-      <h2 class="section-title">// Get in Touch</h2>
+      <h2 class="section-title reveal">// Get in Touch</h2>
 
       <div class="flex flex-col lg:grid lg:grid-cols-3 gap-8">
         <div class="lg:col-span-1 order-2 lg:order-1">
-          <h3 class="text-success text-lg font-semibold mb-6">📬 Contacts</h3>
+          <div class="reveal">
+            <h3 class="text-success text-lg font-semibold mb-6">📬 Contacts</h3>
+          </div>
 
           <div v-if="linksLoading" class="flex justify-center py-4">
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
           </div>
 
           <div v-else class="space-y-3 sm:space-y-4">
-            <a v-for="method in displayContactMethods" :key="method.title" :href="method.link" target="_blank" rel="noopener" class="card p-4 block transition hover:border-blue-500">
+            <a
+              v-for="(method, idx) in displayContactMethods"
+              :key="method.title"
+              :href="method.link"
+              target="_blank"
+              rel="noopener"
+              class="card p-4 block transition hover:border-blue-500 reveal"
+              :class="[`stagger-${idx + 1}`]"
+            >
               <div class="flex items-start gap-3">
                 <span class="text-2xl shrink-0">{{ method.icon }}</span>
                 <div class="min-w-0">
@@ -77,7 +92,7 @@ const handleSubmit = async (e: Event) => {
             </a>
           </div>
 
-          <div class="card p-4 mt-6 transition-all" :style="{ backgroundColor: 'var(--selection)', border: '1px solid var(--accent)' }">
+          <div class="card p-4 mt-6 transition-all reveal" :style="{ backgroundColor: 'var(--selection)', border: '1px solid var(--accent)' }">
             <p class="text-xs" :style="{ color: 'var(--text-primary)' }">
               <strong :style="{ color: 'var(--accent-light)' }">⏱️ Response:</strong> 24h (weekdays)
             </p>
@@ -85,7 +100,7 @@ const handleSubmit = async (e: Event) => {
         </div>
 
         <div class="lg:col-span-2 order-1 lg:order-2">
-          <form @submit="handleSubmit" class="space-y-4 sm:space-y-5">
+          <form @submit="handleSubmit" class="space-y-4 sm:space-y-5 reveal">
             <transition enter-active-class="transition ease-out duration-300" enter-from-class="opacity-0 -translate-y-2" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-200" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 -translate-y-2">
               <div v-if="submitted" class="p-4 border rounded-lg text-sm text-center" :style="{ backgroundColor: 'var(--selection)', borderColor: 'var(--success)', color: 'var(--success)' }">{{ submitMessage }}</div>
             </transition>

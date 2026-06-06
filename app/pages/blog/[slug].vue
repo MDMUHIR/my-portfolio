@@ -38,6 +38,10 @@ function renderContent(content) {
     .split('\n')
     .filter(line => line.trim())
     .map(line => {
+      const imgMatch = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/)
+      if (imgMatch) {
+        return `<img src="${imgMatch[2]}" alt="${imgMatch[1]}" class="rounded-xl max-w-full h-auto my-6 mx-auto" />`
+      }
       if (line.startsWith('## ')) return `<h2 class="text-xl font-bold text-theme mt-8 mb-3">${line.slice(3)}</h2>`
       if (line.startsWith('### ')) return `<h3 class="text-lg font-semibold text-theme mt-6 mb-2">${line.slice(4)}</h3>`
       if (line.startsWith('- ')) return `<li class="text-theme-secondary ml-4 list-disc">${line.slice(2)}</li>`
@@ -73,6 +77,9 @@ function renderContent(content) {
 
     <article v-else-if="post">
       <header class="mb-8">
+        <div v-if="post.image" class="mb-6 -mx-4 sm:-mx-0 rounded-xl overflow-hidden max-h-80">
+          <img :src="post.image" :alt="post.title" class="w-full h-full object-cover" />
+        </div>
         <h1 class="text-2xl md:text-3xl font-bold text-theme mb-4 leading-tight">{{ post.title }}</h1>
         <div class="flex flex-wrap items-center gap-3 text-sm text-theme-secondary">
           <time :datetime="post.createdAt">{{ formatDate(post.createdAt) }}</time>

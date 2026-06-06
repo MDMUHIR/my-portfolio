@@ -5,6 +5,14 @@ onMounted(async () => {
   await fetchSocialLinks();
 });
 
+const { observe, destroy } = useScrollReveal();
+
+onMounted(() => {
+  nextTick(() => observe());
+});
+
+onUnmounted(() => destroy());
+
 const year = new Date().getFullYear();
 
 const defaultSocialLinks = [
@@ -26,7 +34,7 @@ const displaySocialLinks = computed(() => {
   <footer class="mt-12 sm:mt-16 py-10 sm:py-12 bg-theme border-theme" style="border-top-width: 1px">
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-8 mb-8 sm:mb-10">
-        <div>
+        <div class="reveal">
           <h3 class="text-success font-semibold mb-4 text-sm sm:text-base">// profile</h3>
           <ul class="space-y-2.5 text-sm">
             <li><a href="#home" class="text-theme-secondary hover:text-accent transition-colors duration-200">Home</a></li>
@@ -36,7 +44,7 @@ const displaySocialLinks = computed(() => {
           </ul>
         </div>
 
-        <div>
+        <div class="reveal stagger-1">
           <h3 class="text-success font-semibold mb-4 text-sm sm:text-base">// links</h3>
           <ul class="space-y-2.5 text-sm">
             <li><a href="#" class="text-theme-secondary hover:text-accent transition-colors duration-200">GitHub</a></li>
@@ -46,7 +54,7 @@ const displaySocialLinks = computed(() => {
           </ul>
         </div>
 
-        <div>
+        <div class="reveal stagger-2">
           <h3 class="text-success font-semibold mb-4 text-sm sm:text-base">// resources</h3>
           <ul class="space-y-2.5 text-sm">
             <li><NuxtLink to="/blog" class="text-theme-secondary hover:text-accent transition-colors duration-200">Blog</NuxtLink></li>
@@ -56,15 +64,21 @@ const displaySocialLinks = computed(() => {
           </ul>
         </div>
 
-        <div>
+        <div class="reveal stagger-3">
           <h3 class="text-success font-semibold mb-4 text-sm sm:text-base">// social</h3>
           <div class="flex gap-3 sm:gap-4 text-xl sm:text-lg">
-            <a v-for="link in displaySocialLinks" :key="link.title" :href="link.link" :aria-label="link.title" class="text-theme-secondary hover:text-accent transition-colors duration-200 hover:scale-110 inline-block">{{ link.icon }}</a>
+            <a
+              v-for="link in displaySocialLinks"
+              :key="link.title"
+              :href="link.link"
+              :aria-label="link.title"
+              class="text-theme-secondary hover:text-accent transition-colors duration-200 hover:scale-110 inline-block"
+            >{{ link.icon }}</a>
           </div>
         </div>
       </div>
 
-      <div class="border-theme border-t pt-6 sm:pt-8 text-center text-sm text-theme-secondary">
+      <div class="border-theme border-t pt-6 sm:pt-8 text-center text-sm text-theme-secondary reveal">
         <p>&copy; {{ year }} Md. Muhir Uddin • All Rights Reserved</p>
         <p class="mt-2 text-xs">
           Built with

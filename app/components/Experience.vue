@@ -14,19 +14,27 @@ const defaultJobs = [
     ],
     tags: ["JavaScript", "Vue.js", "Nuxt.js", "React.js", "Python", "LangChain", "Django", "FastApi", "PostgreSQL"],
   },
-];
+]
+
+const { observe, destroy } = useScrollReveal()
+
+onMounted(() => {
+  nextTick(() => observe())
+})
+
+onUnmounted(() => destroy())
 </script>
 
 <template>
   <section id="experience" class="section section-default">
     <div class="max-w-5xl mx-auto px-6">
-      <h2 class="section-title">// Experience</h2>
+      <h2 class="section-title reveal">// Experience</h2>
 
       <div class="space-y-6">
         <div
           v-for="exp in defaultJobs"
           :key="exp.id"
-          class="card p-6 hover:shadow-lg"
+          class="card p-6 hover:shadow-lg reveal"
           style="border-left: 3px solid var(--accent)"
         >
           <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-3">
@@ -36,7 +44,7 @@ const defaultJobs = [
               <p class="text-theme-secondary text-sm">📍 {{ exp.location }}</p>
             </div>
             <div class="text-theme-secondary text-right text-sm mt-2 md:mt-0">
-              <p class="font-semibold">{{ exp.duration }}</p>
+              <span class="px-3 py-1 rounded-full text-xs font-semibold" :style="{ backgroundColor: 'var(--selection)', color: 'var(--success)', border: '1px solid var(--success)' }">{{ exp.duration }}</span>
             </div>
           </div>
 
@@ -53,12 +61,7 @@ const defaultJobs = [
             <span
               v-for="tag in exp.tags"
               :key="tag"
-              class="inline-block px-3 py-1 rounded text-xs font-medium"
-              :style="{
-                backgroundColor: 'var(--selection)',
-                color: 'var(--accent-light)',
-                border: '1px solid var(--accent)',
-              }"
+              class="tag-badge"
             >
               {{ tag }}
             </span>

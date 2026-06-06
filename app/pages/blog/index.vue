@@ -52,6 +52,9 @@ function readingTime(content) {
         class="rounded-xl border border-theme bg-theme-secondary p-6 hover:border-accent/30 transition-all duration-200"
       >
         <NuxtLink :to="`/blog/${post.slug}`" class="block">
+          <div v-if="post.image" class="mb-4 -mx-6 -mt-6 rounded-t-xl overflow-hidden h-48">
+            <img :src="post.image" :alt="post.title" class="w-full h-full object-cover" />
+          </div>
           <div class="flex items-start justify-between gap-4 mb-3">
             <h2 class="text-xl font-bold text-theme hover:text-accent transition-colors leading-tight">
               {{ post.title }}

@@ -3,7 +3,12 @@ const { projects, loading, fetchProjects } = useProjects();
 
 onMounted(async () => {
   await fetchProjects();
+  nextTick(() => observe())
 });
+
+const { observe, destroy } = useScrollReveal();
+
+onUnmounted(() => destroy());
 
 const defaultProjects = [
   {
@@ -74,7 +79,7 @@ const displayProjects = computed(() => projects.value.length > 0 ? projects.valu
 <template>
   <section id="projects" class="section section-default">
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
-      <h2 class="section-title">// Featured Projects</h2>
+      <h2 class="section-title reveal">// Featured Projects</h2>
 
       <div v-if="loading" class="flex justify-center py-12">
         <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
@@ -82,13 +87,14 @@ const displayProjects = computed(() => projects.value.length > 0 ? projects.valu
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
         <article
-          v-for="p in displayProjects"
+          v-for="(p, idx) in displayProjects"
           :key="p.id"
-          class="card overflow-hidden group transition-all duration-300 hover:-translate-y-1"
+          class="card overflow-hidden group transition-all duration-300 hover:-translate-y-1 reveal"
+          :class="[`stagger-${(idx % 6) + 1}`]"
         >
           <div
             class="p-6 sm:p-6 flex items-center justify-center min-h-28 sm:min-h-32 transition-all duration-300 group-hover:scale-105"
-            :style="{ background: `linear-gradient(135deg, var(--selection) 0%, var(--bg) 100%)` }"
+            :style="{ background: 'var(--gradient-card)' }"
           >
             <div class="text-5xl sm:text-6xl transition-transform duration-300 group-hover:scale-110">{{ p.image }}</div>
           </div>
@@ -115,12 +121,12 @@ const displayProjects = computed(() => projects.value.length > 0 ? projects.valu
             <div class="flex gap-3 pt-4 border-t border-theme">
               <a
                 :href="p.link"
-                class="flex-1 px-3 py-2 text-xs sm:text-sm text-center rounded-lg font-semibold transition-all duration-200"
+                class="flex-1 px-3 py-2 text-xs sm:text-sm text-center rounded-lg font-semibold transition-all duration-200 hover:shadow-md"
                 :style="{ color: 'var(--accent)', border: '1px solid var(--accent)' }"
               >View</a>
               <a
                 :href="p.github"
-                class="flex-1 px-3 py-2 text-xs sm:text-sm text-center rounded-lg font-semibold transition-all duration-200"
+                class="flex-1 px-3 py-2 text-xs sm:text-sm text-center rounded-lg font-semibold transition-all duration-200 hover:shadow-md"
                 :style="{ color: 'var(--text-secondary)', border: '1px solid var(--border)' }"
               >Code</a>
             </div>
@@ -128,7 +134,7 @@ const displayProjects = computed(() => projects.value.length > 0 ? projects.valu
         </article>
       </div>
 
-      <div class="flex justify-center mt-10 sm:mt-12">
+      <div class="flex justify-center mt-10 sm:mt-12 reveal">
         <NuxtLink to="/projects" class="btn-primary">▶ View All Projects</NuxtLink>
       </div>
     </div>

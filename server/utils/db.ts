@@ -63,7 +63,7 @@ function hashPassword(password: string): string {
   return `${salt}:${hash}`
 }
 
-function verifyPassword(password: string, stored: string): boolean {
+export function verifyPassword(password: string, stored: string): boolean {
   const [salt, hash] = stored.split(':')
   const derived = pbkdf2Sync(password, salt, 100_000, 64, 'sha512').toString('hex')
   return timingSafeEqual(Buffer.from(derived), Buffer.from(hash))
@@ -100,6 +100,20 @@ export function authenticateUser(email: string, password: string): any | null {
   if (!user) return null
   if (!verifyPassword(password, user.password)) return null
   const { password: _, ...safe } = user
+  return safe
+}
+
+export function updateUser(id: string, data: { email?: string; password?: string; name?: string }): any | null {
+  const users = getCollection('users')
+  const index = users.findIndex(u => String(u.id) === String(id))
+  if (index === -1) return null
+  if (data.email) users[index].email = data.email
+  if (data.password) users[index].password = hashPassword(data.password)
+  if (data.name) users[index].name = data.name
+  users[index].updatedAt = new Date().toISOString()
+  store.users = users
+  save()
+  const { password: _, ...safe } = users[index]
   return safe
 }
 

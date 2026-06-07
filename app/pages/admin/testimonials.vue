@@ -16,16 +16,17 @@
 
     <div v-else class="grid gap-6 md:grid-cols-2">
       <div v-for="item in items" :key="item.id" class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <div class="flex items-start justify-between">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-semibold text-lg">
-              {{ item.name.charAt(0) }}
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-4">
+              <img v-if="item.avatar" :src="item.avatar" class="w-12 h-12 rounded-full object-cover" />
+              <div v-else class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-semibold text-lg">
+                {{ item.name?.charAt(0) || '?' }}
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-800">{{ item.name }}</h3>
+                <p class="text-sm text-gray-500">{{ item.role }} at {{ item.company }}</p>
+              </div>
             </div>
-            <div>
-              <h3 class="font-semibold text-gray-800">{{ item.name }}</h3>
-              <p class="text-sm text-gray-500">{{ item.role }} at {{ item.company }}</p>
-            </div>
-          </div>
           <div class="flex gap-2">
             <button @click="openForm(item)" class="p-2 text-gray-500 hover:text-blue-600 transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,8 +74,18 @@
             <input v-model.number="form.rating" type="number" min="1" max="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Avatar URL</label>
-            <input v-model="form.avatar" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+            <label class="block text-sm font-medium text-gray-700 mb-1">Avatar</label>
+            <div class="flex gap-2">
+              <input v-model="form.avatar" type="text" placeholder="URL or upload" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+              <label class="px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer text-sm whitespace-nowrap flex items-center transition-colors">
+                Browse
+                <input type="file" accept="image/*" @change="uploadImage" class="hidden" />
+              </label>
+            </div>
+            <div v-if="uploading" class="text-xs text-gray-500 mt-1">Uploading...</div>
+            <div v-if="form.avatar && !uploading" class="mt-2">
+              <img :src="form.avatar" class="h-16 w-16 rounded-full object-cover border" />
+            </div>
           </div>
           <div class="flex justify-end gap-3 pt-4">
             <button type="button" @click="closeForm" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">Cancel</button>
@@ -99,6 +110,35 @@ const editingItem = ref(null)
 const saving = ref(false)
 
 const form = ref({ name: '', role: '', company: '', content: '', avatar: '', rating: 5 })
+const uploading = ref(false)
+
+const uploadImage = async (e) => {
+  const file = e.target.files?.[0]
+  if (!file) return
+  uploading.value = true
+  try {
+    const fd = new FormData()
+    fd.append('file', file)
+    const token = localStorage.getItem('admin_token')
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      body: fd,
+    })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      throw new Error(err.statusMessage || `Upload failed (${res.status})`)
+    }
+    const data = await res.json()
+    form.value.avatar = data.data.url
+  } catch (err) {
+    alert('Upload failed. ' + (err instanceof Error ? err.message : ''))
+    console.error(err)
+  } finally {
+    uploading.value = false
+    e.target.value = ''
+  }
+}
 
 const loadItems = async () => {
   loading.value = true

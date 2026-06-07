@@ -42,6 +42,11 @@
               Social Links
             </NuxtLink>
           </li>
+          <li>
+            <NuxtLink to="/admin/settings" class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100" :class="{ 'bg-gray-100 text-blue-600': route.path.startsWith('/admin/settings') }">
+              Settings
+            </NuxtLink>
+          </li>
         </ul>
       </nav>
       <div class="absolute bottom-0 w-64 p-4 border-t border-gray-200">

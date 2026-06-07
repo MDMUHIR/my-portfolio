@@ -1,26 +1,26 @@
 <script setup>
-const open = ref(false)
-const scrolled = ref(false)
-const { theme, toggle } = useTheme()
+const open = ref(false);
+const scrolled = ref(false);
+const { theme, toggle } = useTheme();
 
 function toggleMenu() {
-  open.value = !open.value
+  open.value = !open.value;
 }
 function close() {
-  open.value = false
+  open.value = false;
 }
 
 function onScroll() {
-  scrolled.value = window.scrollY > 20
+  scrolled.value = window.scrollY > 20;
 }
 
 onMounted(() => {
-  window.addEventListener('scroll', onScroll, { passive: true })
-})
+  window.addEventListener("scroll", onScroll, { passive: true });
+});
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll)
-})
+  window.removeEventListener("scroll", onScroll);
+});
 
 const navLinks = [
   { name: "Home", to: "/" },
@@ -28,7 +28,7 @@ const navLinks = [
   { name: "Blog", to: "/blog" },
   { name: "Skills", to: "/skills" },
   { name: "Contact", to: "/contact" },
-]
+];
 </script>
 
 <template>
@@ -41,13 +41,20 @@ const navLinks = [
         <div class="flex items-center gap-3 min-w-fit">
           <div
             class="w-10 h-10 flex items-center justify-center text-white font-bold text-sm rounded-lg transition-all duration-200 group-hover:scale-110 group-hover:shadow-lg"
-            :style="{ background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%)' }"
+            :style="{
+              background:
+                'linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%)',
+            }"
           >
             &gt;_
           </div>
           <div class="hidden sm:block">
-            <div class="text-theme text-base font-semibold leading-tight">Md. Muhir</div>
-            <div class="text-theme-secondary text-xs">Full Stack Developer</div>
+            <div class="text-theme text-base font-semibold leading-tight">
+              Md. Muhir
+            </div>
+            <div class="text-theme-secondary text-xs">
+              Frontend & AI Developer
+            </div>
           </div>
         </div>
       </nuxt-link>
@@ -60,7 +67,8 @@ const navLinks = [
           class="px-3 py-2 text-theme-secondary hover:text-accent transition-colors duration-200 text-sm font-medium rounded-lg hover:bg-theme-tertiary relative"
           :to="link.to"
           active-class="text-accent bg-theme-tertiary!"
-        >{{ link.name }}</nuxt-link>
+          >{{ link.name }}</nuxt-link
+        >
       </nav>
 
       <div class="flex items-center gap-2 sm:gap-3">
@@ -70,11 +78,33 @@ const navLinks = [
           :aria-label="`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`"
           class="p-2.5 rounded-lg transition-all duration-200 text-theme-secondary hover:text-accent hover:bg-theme-tertiary"
         >
-          <svg v-if="theme === 'dark'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          <svg
+            v-if="theme === 'dark'"
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+            />
           </svg>
-          <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          <svg
+            v-else
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+            />
           </svg>
         </button>
 
@@ -92,11 +122,33 @@ const navLinks = [
           aria-label="menu"
           class="md:hidden p-2.5 rounded-lg transition-all duration-200 text-theme-secondary hover:bg-theme-tertiary"
         >
-          <svg v-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          <svg
+            v-show="!open"
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
-          <svg v-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <svg
+            v-show="open"
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -121,7 +173,8 @@ const navLinks = [
               @click="close"
               class="text-theme hover:text-accent hover:bg-theme-tertiary font-medium transition-all duration-200 py-3 px-3 rounded-lg"
               active-class="text-accent! bg-theme-tertiary!"
-            >{{ item.name }}</nuxt-link>
+              >{{ item.name }}</nuxt-link
+            >
             <div class="border-theme border-t mt-2 pt-3">
               <a
                 href="#contact"

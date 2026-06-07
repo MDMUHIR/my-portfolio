@@ -6,8 +6,14 @@ interface Store {
   [key: string]: any[]
 }
 
+interface TokenEntry {
+  userId: string
+  expiresAt: string
+}
+
 const DATA_DIR = join(process.cwd(), '.data')
 const DB_PATH = join(DATA_DIR, 'db.json')
+const TOKENS_PATH = join(DATA_DIR, 'tokens.json')
 let store: Store = {}
 
 function load(): Store {
@@ -30,6 +36,27 @@ function save(): void {
   }
 }
 
+function loadTokens(): Map<string, TokenEntry> {
+  try {
+    if (existsSync(TOKENS_PATH)) {
+      const data = JSON.parse(readFileSync(TOKENS_PATH, 'utf-8'))
+      return new Map(Object.entries(data))
+    }
+  } catch (e) {
+    console.error('Failed to load tokens:', e)
+  }
+  return new Map()
+}
+
+function saveTokens(tokens: Map<string, TokenEntry>): void {
+  try {
+    if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true })
+    writeFileSync(TOKENS_PATH, JSON.stringify(Object.fromEntries(tokens), null, 2), 'utf-8')
+  } catch (e) {
+    console.error('Failed to save tokens:', e)
+  }
+}
+
 function hashPassword(password: string): string {
   const salt = randomBytes(16).toString('hex')
   const hash = pbkdf2Sync(password, salt, 100_000, 64, 'sha512').toString('hex')
@@ -42,19 +69,22 @@ function verifyPassword(password: string, stored: string): boolean {
   return timingSafeEqual(Buffer.from(derived), Buffer.from(hash))
 }
 
-const tokens = new Map<string, { userId: string; expiresAt: Date }>()
+const tokens = loadTokens()
 
 export function generateToken(userId: string): string {
   const token = randomBytes(32).toString('hex')
-  tokens.set(token, { userId, expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) })
+  const entry: TokenEntry = { userId, expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() }
+  tokens.set(token, entry)
+  saveTokens(tokens)
   return token
 }
 
 export function validateToken(token: string): { userId: string } | null {
   const data = tokens.get(token)
   if (!data) return null
-  if (data.expiresAt < new Date()) {
+  if (new Date(data.expiresAt) < new Date()) {
     tokens.delete(token)
+    saveTokens(tokens)
     return null
   }
   return { userId: data.userId }
